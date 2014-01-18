@@ -9,7 +9,7 @@ var onConnection = function(primus){
 }
 
 document.onreadystatechange = function () {	
-	var url = "http://localhost:3000";
+	var url = window.location.host;
 	var primus = new  Primus(url, {
 					reconnect: {
 						maxDelay: Infinity // Number: The max delay for a reconnect retry.
