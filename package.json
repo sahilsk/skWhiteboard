@@ -3,31 +3,28 @@
   "version": "0.0.0",
   "description": "Simple realtime whiteboard for collaborating scribbling",
   "main": "server.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "scripts":	{
+	"start" : "node server.js",
+	"build" : "browserify clientScript.js -o bundle.js"
   },
   "repository": {
     "type": "git",
     "url": "git://github.com/sahilsk/skPencil.git"
-  },
-  "scripts":{
-	"start" : "node server.js",
-	"build" : "browserify clientScript.js -o bundle.js"
   },
   "keywords": [
     "skPencile",
     "whiteboard",
     "real",
     "time"
-  ], 
-  "engines": {
-    "node": "0.10.x"
-  }
+  ],
   "author": "sahilsk",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/sahilsk/skPencil/issues"
   },
+  "engines": {
+    "node": "0.10.x"
+  }  ,
   "dependencies": {
     "browserify": "~3.20.0",
     "primus": "~1.5.2",
