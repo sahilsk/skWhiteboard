@@ -31,12 +31,7 @@ var Pencil = function (opts) {
         'stroke-width': '4px'
     };
 }
-
 util.inherits(Pencil, events.EventEmitter);
-Pencil.prototype.write = function(){
-	var pixel = "";
-	this.emit("pixel", pixel);
-}
 
 Pencil.prototype.setWhiteboard = function( element){
 	this.whiteboard =  document.getElementById(element);

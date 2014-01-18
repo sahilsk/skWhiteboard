@@ -15,7 +15,10 @@
     "whiteboard",
     "real",
     "time"
-  ],
+  ], 
+  "engines": {
+    "node": "0.10.x"
+  }
   "author": "sahilsk",
   "license": "MIT",
   "bugs": {
