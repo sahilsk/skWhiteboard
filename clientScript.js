@@ -1,5 +1,6 @@
 var 
-	Pencil = require("./skPencil")
+	Pencil = require("./skPencil"),
+	randomColor = require('random-color')
 	;
 
 var onConnection = function(primus){
@@ -25,7 +26,6 @@ document.onreadystatechange = function () {
     }
 }
 
-
 function initSKPencil(primus) {
 	window.Pencil = Pencil;
 	var pencil = new Pencil();
@@ -33,10 +33,9 @@ function initSKPencil(primus) {
 	pencil.draw();
 	pencil.brushStyle = {
         'fill': 'none',
-        'stroke': 'red',
-        'stroke-width': '4px'
+        'stroke': 'black',
+        'stroke-width': '1px'
     };
-	pencil.brushStyle.stroke = "blue";	
 	
 	pencil.on("path", function(path){
 		console.log("pixel emitted" );
@@ -48,6 +47,7 @@ function initSKPencil(primus) {
 	});
 	pencil.on("stopped", function(pos){
 		console.log("client stopped at ", pos );
+		pencil.brushStyle.stroke = randomColor();	
 		primus.send("stopped", pos);
 	});	
 	primus.on("cPath", function(cPath){

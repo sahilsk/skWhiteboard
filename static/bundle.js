@@ -977,7 +977,8 @@ function hasOwnProperty(obj, prop) {
 
 },{"./support/isBuffer":4,"__browserify_process":3,"inherits":2}],6:[function(require,module,exports){
 var 
-	Pencil = require("./skPencil")
+	Pencil = require("./skPencil"),
+	randomColor = require('random-color')
 	;
 
 var onConnection = function(primus){
@@ -1003,7 +1004,6 @@ document.onreadystatechange = function () {
     }
 }
 
-
 function initSKPencil(primus) {
 	window.Pencil = Pencil;
 	var pencil = new Pencil();
@@ -1012,9 +1012,9 @@ function initSKPencil(primus) {
 	pencil.brushStyle = {
         'fill': 'none',
         'stroke': 'red',
-        'stroke-width': '4px'
+        'stroke-width': '1px'
     };
-	pencil.brushStyle.stroke = "blue";	
+	pencil.brushStyle.stroke = randomColor();	
 	
 	pencil.on("path", function(path){
 		console.log("pixel emitted" );
@@ -1037,7 +1037,19 @@ function initSKPencil(primus) {
 
 }
 
-},{"./skPencil":7}],7:[function(require,module,exports){
+},{"./skPencil":8,"random-color":7}],7:[function(require,module,exports){
+module.exports = color;
+
+function num(cap){
+  return Math.floor( Math.random() * cap );
+}
+
+function color(cap){
+  cap || ( cap = 255 );
+  return 'rgb(' + num(cap) + ', ' + num(cap) + ', ' + num(cap) + ')';
+}
+
+},{}],8:[function(require,module,exports){
 var util = require("util");
 var events = require("events");
 var Pencil = function (opts) {

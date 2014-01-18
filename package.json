@@ -3,9 +3,9 @@
   "version": "0.0.0",
   "description": "Simple realtime whiteboard for collaborating scribbling",
   "main": "server.js",
-  "scripts":	{
-	"start" : "node server.js",
-	"postinstall" : "browserify clientScript.js -o ./static/bundle.js"
+  "scripts": {
+    "start": "node server.js",
+    "postinstall": "browserify clientScript.js -o ./static/bundle.js"
   },
   "repository": {
     "type": "git",
@@ -24,13 +24,14 @@
   },
   "engines": {
     "node": "0.10.x"
-  }  ,
+  },
   "dependencies": {
     "browserify": "~3.20.0",
     "primus": "~1.5.2",
     "primus-emitter": "~2.0.5",
     "websockets": "~0.2.0",
     "sockjs": "~0.3.8",
-    "ecstatic": "~0.4.13"
+    "ecstatic": "~0.4.13",
+    "random-color": "0.0.0"
   }
 }

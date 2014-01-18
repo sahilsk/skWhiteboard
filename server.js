@@ -44,7 +44,7 @@ var
 			console.log("%s: Started drawing",  spark.id);
 		});
 		spark.on("path", function(path){
-			console.log("new path traced: %s", path);
+			console.log("new path traced: %j", path);
 			var client_id = spark.id;
 //			primus.send("cPath", path);
 			primus.forEach(function (cpark, id, connections) {
