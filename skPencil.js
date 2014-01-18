@@ -41,7 +41,7 @@ Pencil.prototype.setWhiteboard = function( element){
 		return;
 	}
 	this.svg = 	document.createElementNS("http://www.w3.org/2000/svg", "svg");
-    this.svg.setAttribute("style", "width: " + this.whiteboard.style.width + "; height: " + this.whiteboard.style.height + ";");
+  //  this.svg.setAttribute("style", "width: " + this.whiteboard.style.width + "; height: " + this.whiteboard.style.height + ";");
     this.whiteboard.appendChild( this.svg);
 	console.log("whiteboard initialized successfully");
 }
@@ -60,8 +60,8 @@ Pencil.prototype.draw = function(){
 		}    
 		ctxt_pencil.path.setAttribute("style", brushStyle_arr.join(";") + ";" );
 		ctxt_pencil.lPts = [];                             
-		ctxt_pencil.mPt = "M" + ev.clientX + " " + ev.clientY;                         
-		console.log("onMouseDown: ", ev.clientX, ev.clientY);
+		ctxt_pencil.mPt = "M " + ev.offsetX + "," + ev.offsetY;                         
+		console.log("onMouseDown: ", ev.offsetX, ev.offsetY);
 		ctxt_pencil.svg.appendChild(ctxt_pencil.path);
 		
 		ctxt_pencil.emit("started", ctxt_pencil.mPt);
@@ -70,10 +70,10 @@ Pencil.prototype.draw = function(){
 	var onMouseMove = function (ev) {
 		if (ctxt_pencil.path == null)
 			return;
-		ctxt_pencil.lPts.push("L" + ev.clientX + " " + ev.clientY);
+		ctxt_pencil.lPts.push("L " + ev.offsetX + "," + ev.offsetY);
 		console.log( "::::::::::" + ctxt_pencil.mPt);
 		ctxt_pencil.path.setAttribute("d", ctxt_pencil.mPt + " " + ctxt_pencil.lPts.join(" ") );
-		console.log("onMouseMove: ", ev.clientX, ev.clientY);
+		console.log("onMouseMove: ", ev.offsetX, ev.offsetY);
 	}
 	var onMouseUp = function (ev) {
 		if (ctxt_pencil.lPts.length === 0) {
@@ -84,7 +84,7 @@ Pencil.prototype.draw = function(){
 		ctxt_pencil.path = null;
 		ctxt_pencil.mPt = "";
 		ctxt_pencil.lPts = [];
-		console.log("onMouseUp: ", ev.clientX, ev.clientY);
+		console.log("onMouseUp: ", ev.offsetX, ev.offsetY);
 		
 	}	
     this.whiteboard.addEventListener('mousemove', onMouseMove);
