@@ -23,11 +23,7 @@ var
 				default:
 					res.end("welcome page");
 			}
-			
-			fs.writeFile("./req.html", (req),  function(){
-				console.log("done writing ", req.url);
-			});
-							console.log("done writing ", req.url);
+			console.log("Requested file: ", req.url);
 
 
 	
