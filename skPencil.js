@@ -80,7 +80,7 @@ Pencil.prototype.draw = function(){
 			ctxt_pencil.svg.removeChild(ctxt_pencil.path);
 		}else
 			ctxt_pencil.emit("path", { mPt : ctxt_pencil.mPt, lPts: ctxt_pencil.lPts, brushStyle : ctxt_pencil.brushStyle} );
-		ctxt_pencil.emit("stopped", ctxt_pencil.lPts[ctxt_pencil.lPts.length]);
+		ctxt_pencil.emit("stopped", ctxt_pencil.lPts[ctxt_pencil.lPts.length - 1]);
 		ctxt_pencil.path = null;
 		ctxt_pencil.mPt = "";
 		ctxt_pencil.lPts = [];
