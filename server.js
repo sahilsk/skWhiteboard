@@ -6,27 +6,25 @@ var
 	
 var 
 	server = http.createServer(function(req, res){
-		
-			switch(req.url){
-				case("/bundle.js"):
-					fs.readFile("./bundle.js",  function(err, data){
-							console.log("done supplying bundle.js ");
-							res.end(data);
-					});
-					break;
-				case("/index.html"):
-					fs.readFile('./index.html', function (err, data) {
-					  res.end(data);
-					});
-					break;
-				
-				default:
-					res.redirect("/index.html");
-			}
-			console.log("Requested file: ", req.url);
-
-
-	
+				switch(req.url){
+					case("/bundle.js"):
+						fs.readFile("./bundle.js",  function(err, data){
+								console.log("done supplying bundle.js ");
+								res.end(data);
+						});
+						break;
+					case("/index.html"):
+						fs.readFile('./index.html', function (err, data) {
+						  res.end(data);
+						});
+						break;
+					
+					default:
+						fs.readFile('./index.html', function (err, data) {
+						  res.end(data);
+						});
+				}
+				console.log("Requested file: ", req.url);	
 			}),
 	primus = new Primus(server, {
 					transformer: 'sockjs',
