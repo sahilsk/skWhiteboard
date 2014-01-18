@@ -45,7 +45,13 @@ var
 		});
 		spark.on("path", function(path){
 			console.log("new path traced: %s", path);
-			primus.send("cPath", path);
+			var client_id = spark.id;
+//			primus.send("cPath", path);
+			primus.forEach(function (cpark, id, connections) {
+			  if (cpark.id === client_id ) return;
+			  cpark.send('cPath', path);
+			});
+			
 		});
 		
 	}).on("disconnection", function(spark){
