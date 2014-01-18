@@ -1,101 +1,115 @@
+var util = require("util");
+var events = require("events");
 var Pencil = function (opts) {
+	events.EventEmitter.call(this);
     var defaults = {
-        'canvasId' : "canvas",
+        'whiteboardId' : "whiteboard",
         'brushStyle': {
             fill: 'none',
             stroke: 'black',
             "stroke-width": '1px'
         }        
-    }
-    
+    }    
+
     var options ={};
     if( typeof opts ==  "undefined" ){
         options = defaults;
     }else{
         options = {
-            'canvasId': (opts.canvasId) || defaults.canvasId,
             "brushStyle": opts.brushStyle || defaults.brushStyle        
         }
-    }
-    
-    this.canvas = document.getElementById( options.canvasId );
-    this.svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-
+    }	
+    this.whiteboard = null;//document.getElementById( options.whiteboardId );
+    this.svg = null;
     this.path = null;
     this.mPt = "";
     this.lPts = [];
-
-    this.boardStyle = {
-        width: this.canvas.style.width,
-        height: this.canvas.style.height
-    };
-    
-    this.pencilStyle = {
+  
+    this.brushStyle = {
         'fill': 'none',
         'stroke': 'black',
         'stroke-width': '4px'
     };
-    
-    this.svg.setAttribute("style", "width: " + this.canvas.style.width + "; height: " + this.canvas.style.height + ";");
-
 }
 
-var pencil = new Pencil();
-
-var onMouseDown = function (ev) {
-    pencil.path = document.createElementNS("http://www.w3.org/2000/svg", "path");
-    
-    
-    var pencilStyle_arr = new Array();    
-    for( var key in pencil.pencilStyle){
-        pencilStyle_arr.push ( key + ":" + pencil.pencilStyle[key] );
-    }
-    
-    pencil.path.setAttribute("style", pencilStyle_arr.join(";") + ";" );
-
-    pencil.lPts = [];                             
-    pencil.mPt = "M" + ev.clientX + " " + ev.clientY;
-                             
-
-    console.log("onMouseDown: ", ev.clientX, ev.clientY);
-    pencil.svg.appendChild(pencil.path);
-
-}
-var onMouseMove = function (ev) {
-    if (pencil.path == null)
-        return;
-    pencil.lPts.push("L" + ev.clientX + " " + ev.clientY);
-    console.log( "::::::::::" + pencil.mPt);
-    pencil.path.setAttribute("d", pencil.mPt + " " + pencil.lPts.join(" ") );
-    console.log("onMouseMove: ", ev.clientX, ev.clientY);
-}
-var onMouseUp = function (ev) {
-    if (pencil.lPts.length === 0) {
-        pencil.svg.removeChild(pencil.path);
-    }
-    pencil.path = null;
-    pencil.mPt = "";
-    pencil.lPts = [];
-
-    console.log("onMouseUp: ", ev.clientX, ev.clientY);
+util.inherits(Pencil, events.EventEmitter);
+Pencil.prototype.write = function(){
+	var pixel = "";
+	this.emit("pixel", pixel);
 }
 
-
-
-
-document.onreadystatechange = function () {
-    if (document.readyState == "complete") {
-        initSKPencil();
-    }
+Pencil.prototype.setWhiteboard = function( element){
+	this.whiteboard =  document.getElementById(element);
+	if(this.whiteboard == null){
+		console.log("Whiteboard not found: ", element);
+		alert("Error: whiteboard not found");
+		return;
+	}
+	this.svg = 	document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    this.svg.setAttribute("style", "width: " + this.whiteboard.style.width + "; height: " + this.whiteboard.style.height + ";");
+    this.whiteboard.appendChild( this.svg);
+	console.log("whiteboard initialized successfully");
 }
 
+Pencil.prototype.draw = function(){
+	if( !this.whiteboard ) return;
+	console.log(this);
+	var ctxt_pencil = this;
 
-function initSKPencil() {
-    console.log("Application init.");
-    var canvas = document.getElementById('canvas');
-
-    canvas.appendChild( pencil.svg);
-    canvas.addEventListener('mousemove', onMouseMove);
-    canvas.addEventListener('mousedown', onMouseDown);
-    canvas.addEventListener('mouseup', onMouseUp);
+	var onMouseDown = function (ev) {
+		ctxt_pencil.path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+			
+		var brushStyle_arr = new Array();    
+		for( var key in ctxt_pencil.brushStyle){
+			brushStyle_arr.push ( key + ":" + ctxt_pencil.brushStyle[key] );
+		}    
+		ctxt_pencil.path.setAttribute("style", brushStyle_arr.join(";") + ";" );
+		ctxt_pencil.lPts = [];                             
+		ctxt_pencil.mPt = "M" + ev.clientX + " " + ev.clientY;                         
+		console.log("onMouseDown: ", ev.clientX, ev.clientY);
+		ctxt_pencil.svg.appendChild(ctxt_pencil.path);
+		
+		ctxt_pencil.emit("started", ctxt_pencil.mPt);
+		
+	}
+	var onMouseMove = function (ev) {
+		if (ctxt_pencil.path == null)
+			return;
+		ctxt_pencil.lPts.push("L" + ev.clientX + " " + ev.clientY);
+		console.log( "::::::::::" + ctxt_pencil.mPt);
+		ctxt_pencil.path.setAttribute("d", ctxt_pencil.mPt + " " + ctxt_pencil.lPts.join(" ") );
+		console.log("onMouseMove: ", ev.clientX, ev.clientY);
+	}
+	var onMouseUp = function (ev) {
+		if (ctxt_pencil.lPts.length === 0) {
+			ctxt_pencil.svg.removeChild(ctxt_pencil.path);
+		}else
+			ctxt_pencil.emit("path", { mPt : ctxt_pencil.mPt, lPts: ctxt_pencil.lPts, brushStyle : ctxt_pencil.brushStyle} );
+		ctxt_pencil.emit("stopped", ctxt_pencil.lPts[ctxt_pencil.lPts.length]);
+		ctxt_pencil.path = null;
+		ctxt_pencil.mPt = "";
+		ctxt_pencil.lPts = [];
+		console.log("onMouseUp: ", ev.clientX, ev.clientY);
+		
+	}	
+    this.whiteboard.addEventListener('mousemove', onMouseMove);
+    this.whiteboard.addEventListener('mousedown', onMouseDown);
+    this.whiteboard.addEventListener('mouseup', onMouseUp);	
+	
+    console.log("skPencil is ready to go.");
 }
+
+Pencil.prototype.addPath = function(path){
+	var pathNode = document.createElementNS("http://www.w3.org/2000/svg", "path");
+	var brushStyle_arr = new Array(); 	
+	for( var key in path.brushStyle){
+		brushStyle_arr.push ( key + ":" + path.brushStyle[key] );
+	}    
+	pathNode.setAttribute("style", brushStyle_arr.join(";") + ";" );  
+	pathNode.setAttribute("d", path.mPt + " " + path.lPts.join(" ") );
+	
+	this.svg.appendChild(pathNode);
+}
+
+module.exports = Pencil;
+

@@ -1,0 +1,32 @@
+{
+  "name": "skPencil",
+  "version": "0.0.0",
+  "description": "Simple realtime whiteboard for collaborating scribbling",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/sahilsk/skPencil.git"
+  },
+  "keywords": [
+    "skPencile",
+    "whiteboard",
+    "real",
+    "time"
+  ],
+  "author": "sahilsk",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sahilsk/skPencil/issues"
+  },
+  "dependencies": {
+    "browserify": "~3.20.0",
+    "primus": "~1.5.2",
+    "primus-emitter": "~2.0.5",
+    "websockets": "~0.2.0",
+    "sockjs": "~0.3.8",
+    "ecstatic": "~0.4.13"
+  }
+}
