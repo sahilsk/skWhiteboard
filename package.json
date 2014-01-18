@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts":	{
 	"start" : "node server.js",
-	"postinstall" : "browserify clientScript.js -o bundle.js"
+	"postinstall" : "browserify clientScript.js -o ./static/bundle.js"
   },
   "repository": {
     "type": "git",

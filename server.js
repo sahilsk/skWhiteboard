@@ -8,7 +8,7 @@ var
 	server = http.createServer(function(req, res){
 				switch(req.url){
 					case("/bundle.js"):
-						fs.readFile("./bundle.js",  function(err, data){
+						fs.readFile("./static/bundle.js",  function(err, data){
 								console.log("done supplying bundle.js ");
 								res.end(data);
 						});

@@ -9,7 +9,7 @@ var onConnection = function(primus){
 }
 
 document.onreadystatechange = function () {	
-	var url = window.location.host;
+	var url = "/"
 	var primus = new  Primus(url, {
 					reconnect: {
 						maxDelay: Infinity // Number: The max delay for a reconnect retry.
@@ -38,10 +38,6 @@ function initSKPencil(primus) {
     };
 	pencil.brushStyle.stroke = "blue";	
 	
-		window.pencil = pencil;
-
-	
-	
 	pencil.on("path", function(path){
 		console.log("pixel emitted" );
 		primus.send("path", path);
@@ -59,5 +55,6 @@ function initSKPencil(primus) {
 		console.log("cPath : '%j'", cPath);
 	});
 	
+	window.pencil = pencil;
 
 }
