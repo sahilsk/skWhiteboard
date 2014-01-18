@@ -21,7 +21,7 @@ var
 					break;
 				
 				default:
-					res.end("welcome page");
+					res.redirect("/index.html");
 			}
 			console.log("Requested file: ", req.url);
 
