@@ -2,6 +2,10 @@
     <head>
         <title> SK Whiteboard</title>
         <style>
+        body{
+			padding: 0;
+			margin: 0;
+	}
         #canvas {
 			border: 2px solid purple;
 			width: 700px;
@@ -9,10 +13,12 @@
 			cursor: crosshair;
 			margin: 0 auto;
         }
-		body{
-			padding: 0;
-			margin: 0;
-		}
+
+	#canvas svg {
+			position: relative;
+			width: 100%;
+			height: 100%;
+	}
         </style>
     </head>
     <body>
